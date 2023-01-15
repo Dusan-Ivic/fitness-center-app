@@ -17,7 +17,28 @@ exports.getUsers = async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 exports.createUser = async (req, res) => {
-  const user = await User.create(req.body);
+  const discriminator = User.discriminators[req.body.role];
+
+  if (!discriminator) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid role",
+    });
+  }
+
+  switch (req.body.role) {
+    case "visitor":
+      req.body.trainings = [];
+      break;
+    case "trainer":
+      req.body.trainings = [];
+      break;
+    case "owner":
+      req.body.centers = [];
+      break;
+  }
+
+  const user = await discriminator.create(req.body);
 
   res.status(201).json({
     success: true,
@@ -46,6 +67,19 @@ exports.updateUser = async (req, res) => {
   user.lastName = req.body.lastName;
   user.gender = req.body.gender;
   user.birthdate = req.body.birthdate;
+
+  switch (user.role) {
+    case "visitor":
+      user.trainings = req.body.trainings;
+      break;
+    case "trainer":
+      user.trainings = req.body.trainings;
+      user.center = req.body.center;
+      break;
+    case "owner":
+      user.centers = req.body.centers;
+      break;
+  }
 
   await user.save();
 
