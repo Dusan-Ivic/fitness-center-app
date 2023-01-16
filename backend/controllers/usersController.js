@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const { validationResult } = require("express-validator");
 
 // @desc    Get all users
 // @route   GET /api/users
@@ -17,6 +18,15 @@ exports.getUsers = async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 exports.createUser = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
   const discriminator = User.discriminators[req.body.role];
 
   if (!discriminator) {
@@ -51,6 +61,15 @@ exports.createUser = async (req, res) => {
 // @route   PUT /api/users/:id
 // @access  Public
 exports.updateUser = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
   const user = await User.findById(req.params.id);
 
   if (!user) {
