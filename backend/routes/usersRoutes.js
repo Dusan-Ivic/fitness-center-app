@@ -7,8 +7,13 @@ router.get("/", usersController.getUsers);
 
 router.post("/", userValidator.validateBody, usersController.createUser);
 
-router.put("/:id", userValidator.validateBody, usersController.updateUser);
+router.put(
+  "/:id",
+  userValidator.validateParams,
+  userValidator.validateBody,
+  usersController.updateUser
+);
 
-router.delete("/:id", usersController.deleteUser);
+router.delete("/:id", userValidator.validateParams, usersController.deleteUser);
 
 module.exports = router;

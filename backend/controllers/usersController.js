@@ -113,6 +113,15 @@ exports.updateUser = async (req, res) => {
 // @route   DELETE /api/users/:id
 // @access  Public
 exports.deleteUser = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
   const user = await User.findById(req.params.id);
 
   if (!user) {

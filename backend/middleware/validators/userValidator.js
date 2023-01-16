@@ -1,4 +1,5 @@
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
+const { isValidObjectId } = require("mongoose");
 
 exports.validateBody = [
   body("email")
@@ -55,5 +56,20 @@ exports.validateBody = [
     .bail()
     .isIn(["visitor", "trainer", "owner"])
     .withMessage("Role is not valid")
+    .bail(),
+];
+
+exports.validateParams = [
+  param("id")
+    .trim()
+    .notEmpty()
+    .withMessage("Id is required")
+    .bail()
+    .custom((value) => {
+      if (!isValidObjectId(value)) {
+        throw new Error("Id is not valid");
+      }
+      return true;
+    })
     .bail(),
 ];
