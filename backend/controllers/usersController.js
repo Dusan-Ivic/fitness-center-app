@@ -27,6 +27,28 @@ exports.createUser = async (req, res) => {
     });
   }
 
+  const emailConflict = await User.findOne({
+    email: req.body.email,
+  });
+
+  if (emailConflict) {
+    return res.status(400).json({
+      success: false,
+      message: "Email is already taken",
+    });
+  }
+
+  const usernameConflict = await User.findOne({
+    username: req.body.username,
+  });
+
+  if (usernameConflict) {
+    return res.status(400).json({
+      success: false,
+      message: "Username is already taken",
+    });
+  }
+
   const discriminator = User.discriminators[req.body.role];
 
   if (!discriminator) {
@@ -77,6 +99,34 @@ exports.updateUser = async (req, res) => {
       success: false,
       message: "User with specified ID doesn't exist",
     });
+  }
+
+  // Email modified
+  if (user.email !== req.body.email) {
+    const emailConflict = await User.findOne({
+      email: req.body.email,
+    });
+
+    if (emailConflict) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is already taken",
+      });
+    }
+  }
+
+  // Username modified
+  if (user.username !== req.body.username) {
+    const usernameConflict = await User.findOne({
+      username: req.body.username,
+    });
+
+    if (usernameConflict) {
+      return res.status(400).json({
+        success: false,
+        message: "Username is already taken",
+      });
+    }
   }
 
   user.email = req.body.email;
