@@ -10,9 +10,10 @@ connectDB(process.env.MONGO_URI);
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Fitness Center Information System");
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use("/api/users", require("./routes/usersRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server running in ${NODE_ENV} mode on port ${PORT}...`);
