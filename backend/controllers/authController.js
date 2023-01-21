@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const { validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
 
 // @desc    Login existing user
 // @route   POST /api/auth/login
@@ -30,9 +31,14 @@ exports.loginUser = async (req, res) => {
     });
   }
 
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    expiresIn: "24h",
+  });
+
   res.status(200).json({
     success: true,
     message: "User logged in",
     data: user,
+    access_token: token,
   });
 };
