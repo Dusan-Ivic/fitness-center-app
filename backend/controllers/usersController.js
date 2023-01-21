@@ -92,6 +92,13 @@ exports.updateUser = async (req, res) => {
     });
   }
 
+  if (req.user.id !== req.params.id) {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized (update)",
+    });
+  }
+
   const user = await User.findById(req.params.id);
 
   if (!user) {
@@ -169,6 +176,13 @@ exports.deleteUser = async (req, res) => {
     return res.status(400).json({
       success: false,
       message: errors.array().map((err) => err.msg),
+    });
+  }
+
+  if (req.user.id !== req.params.id) {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized (delete)",
     });
   }
 
