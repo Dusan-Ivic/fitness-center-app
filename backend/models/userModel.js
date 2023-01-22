@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 // Options
 userSchemaOptions = {
   collection: "users",
-  discriminatorKey: "role",
 };
 
 // Base user schema
@@ -40,58 +39,11 @@ const userSchema = Schema(
       type: Date,
       required: true,
     },
-    role: {
-      type: String,
-      required: true,
-    },
   },
   userSchemaOptions
 );
 
-// Visitor sub schema
-const visitorSchema = Schema({
-  // Trainings visitor is attending
-  trainings: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Training",
-    },
-  ],
-});
-
-// Trainer sub schema
-const trainerSchema = Schema({
-  // Trainings trainer is working on
-  trainings: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Training",
-    },
-  ],
-  // Fitness center trainer is employed in
-  center: {
-    type: Schema.Types.ObjectId,
-    ref: "Center",
-  },
-});
-
-// Owner sub schema
-const ownerSchema = Schema({
-  // Owned fitness centers
-  centers: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Center",
-    },
-  ],
-});
-
-// Base model
+// Base user model
 const User = mongoose.model("User", userSchema);
-
-// Discriminator models
-User.discriminator("visitor", visitorSchema);
-User.discriminator("trainer", trainerSchema);
-User.discriminator("owner", ownerSchema);
 
 module.exports = User;
