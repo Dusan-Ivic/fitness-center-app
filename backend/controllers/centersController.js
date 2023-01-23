@@ -1,4 +1,5 @@
 const Center = require("../models/centerModel");
+const { validationResult } = require("express-validator");
 
 // @desc    Get all fitness centers
 // @route   GET /api/centers
@@ -17,6 +18,15 @@ exports.getCenters = async (req, res) => {
 // @route   POST /api/centers
 // @access  Public
 exports.createCenter = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
   const center = await Center.create(req.body);
 
   res.status(201).json({
@@ -30,6 +40,15 @@ exports.createCenter = async (req, res) => {
 // @route   PUT /api/centers/:id
 // @access  Public
 exports.updateCenter = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
   const center = await Center.findById(req.params.id);
 
   if (!center) {
@@ -61,6 +80,15 @@ exports.updateCenter = async (req, res) => {
 // @route   DELETE /api/centers/:id
 // @access  Public
 exports.deleteCenter = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
   const center = await Center.findById(req.params.id);
 
   if (!center) {
