@@ -1,0 +1,82 @@
+const Center = require("../models/centerModel");
+
+// @desc    Get all fitness centers
+// @route   GET /api/centers
+// @access  Public
+exports.getCenters = async (req, res) => {
+  const centers = await Center.find();
+
+  res.status(200).json({
+    success: true,
+    count: centers.length,
+    data: centers,
+  });
+};
+
+// @desc    Create new fitness center
+// @route   POST /api/centers
+// @access  Public
+exports.createCenter = async (req, res) => {
+  const center = await Center.create(req.body);
+
+  res.status(201).json({
+    success: true,
+    message: "Fitness center created",
+    data: center,
+  });
+};
+
+// @desc    Update existing fitness center
+// @route   PUT /api/centers/:id
+// @access  Public
+exports.updateCenter = async (req, res) => {
+  const center = await Center.findById(req.params.id);
+
+  if (!center) {
+    return res.status(404).json({
+      success: false,
+      message: "Fitness center with specified ID doesn't exist",
+    });
+  }
+
+  center.name = req.body.name;
+  center.address = req.body.address;
+  center.openingYear = req.body.openingYear;
+  center.monthlyMembershipFee = req.body.monthlyMembershipFee;
+  center.annualMembershipFee = req.body.annualMembershipFee;
+  center.singleTrainingPrice = req.body.singleTrainingPrice;
+  center.groupTrainingPrice = req.body.groupTrainingPrice;
+  center.personalTrainingPrice = req.body.personalTrainingPrice;
+
+  await center.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Fitness center updated",
+    data: center,
+  });
+};
+
+// @desc    Delete existing fitness center
+// @route   DELETE /api/centers/:id
+// @access  Public
+exports.deleteCenter = async (req, res) => {
+  const center = await Center.findById(req.params.id);
+
+  if (!center) {
+    return res.status(404).json({
+      success: false,
+      message: "Fitness center with specified ID doesn't exist",
+    });
+  }
+
+  await center.remove();
+
+  res.status(200).json({
+    success: true,
+    message: "Fitness center deleted",
+    data: {
+      _id: req.params.id,
+    },
+  });
+};
