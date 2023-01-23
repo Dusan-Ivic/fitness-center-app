@@ -1,13 +1,27 @@
 const express = require("express");
 const router = express.Router();
 const trainingsController = require("../controllers/trainingsController");
+const trainingValidator = require("../middleware/validators/trainingValidator");
 
 router.get("/", trainingsController.getTrainings);
 
-router.post("/", trainingsController.createTraining);
+router.post(
+  "/",
+  trainingValidator.validateBody,
+  trainingsController.createTraining
+);
 
-router.put("/:id", trainingsController.updateTraining);
+router.put(
+  "/:id",
+  trainingValidator.validateParams,
+  trainingValidator.validateBody,
+  trainingsController.updateTraining
+);
 
-router.delete("/:id", trainingsController.deleteTraining);
+router.delete(
+  "/:id",
+  trainingValidator.validateParams,
+  trainingsController.deleteTraining
+);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const Training = require("../models/trainingModel");
+const { validationResult } = require("express-validator");
 
 // @desc    Get all trainings
 // @route   GET /api/trainings
@@ -17,6 +18,15 @@ exports.getTrainings = async (req, res) => {
 // @route   POST /api/trainings
 // @access  Public
 exports.createTraining = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
   const training = await Training.create(req.body);
 
   res.status(201).json({
@@ -30,6 +40,15 @@ exports.createTraining = async (req, res) => {
 // @route   PUT /api/trainings/:id
 // @access  Public
 exports.updateTraining = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
   const training = await Training.findById(req.params.id);
 
   if (!training) {
@@ -58,6 +77,15 @@ exports.updateTraining = async (req, res) => {
 // @route   DELETE /api/trainings/:id
 // @access  Public
 exports.deleteTraining = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
   const training = await Training.findById(req.params.id);
 
   if (!training) {
