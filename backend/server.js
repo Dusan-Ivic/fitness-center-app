@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/users", require("./routes/usersRoutes"));
 app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/centers", require("./routes/centersRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server running in ${NODE_ENV} mode on port ${PORT}...`);
