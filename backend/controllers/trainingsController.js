@@ -27,6 +27,11 @@ exports.createTraining = async (req, res) => {
     });
   }
 
+  // TODO - Check if authenticated user's role is trainer
+
+  // Set authenticated user as new trainings's trainer
+  req.body.trainer = req.user._id;
+
   const training = await Training.create(req.body);
 
   res.status(201).json({
@@ -55,6 +60,13 @@ exports.updateTraining = async (req, res) => {
     return res.status(404).json({
       success: false,
       message: "Training with specified ID doesn't exist",
+    });
+  }
+
+  if (!training.trainer.equals(req.user._id)) {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized to update this training",
     });
   }
 
@@ -92,6 +104,13 @@ exports.deleteTraining = async (req, res) => {
     return res.status(404).json({
       success: false,
       message: "Training with specified ID doesn't exist",
+    });
+  }
+
+  if (!training.trainer.equals(req.user._id)) {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized to delete this training",
     });
   }
 

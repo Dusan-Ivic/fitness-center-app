@@ -21,6 +21,11 @@ const trainingSchema = Schema(
       type: Date,
       required: true,
     },
+    trainer: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     duration: {
       type: Number,
       required: true,
