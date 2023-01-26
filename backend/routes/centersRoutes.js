@@ -2,13 +2,20 @@ const express = require("express");
 const router = express.Router();
 const centersController = require("../controllers/centersController");
 const centerValidator = require("../middleware/validators/centerValidator");
+const authMiddleware = require("../middleware/authMiddleware");
 
-router.get("/", centersController.getCenters);
+router.get("/", authMiddleware.authenticateUser, centersController.getCenters);
 
-router.post("/", centerValidator.validateBody, centersController.createCenter);
+router.post(
+  "/",
+  authMiddleware.authenticateUser,
+  centerValidator.validateBody,
+  centersController.createCenter
+);
 
 router.put(
   "/:id",
+  authMiddleware.authenticateUser,
   centerValidator.validateParams,
   centerValidator.validateBody,
   centersController.updateCenter
@@ -16,6 +23,7 @@ router.put(
 
 router.delete(
   "/:id",
+  authMiddleware.authenticateUser,
   centerValidator.validateParams,
   centersController.deleteCenter
 );

@@ -21,6 +21,11 @@ const centerSchema = Schema(
       type: Date,
       required: true,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     monthlyMembershipFee: {
       type: Schema.Types.Decimal128,
       required: true,

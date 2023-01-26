@@ -27,6 +27,11 @@ exports.createCenter = async (req, res) => {
     });
   }
 
+  // TODO - Check if authenticated user's role is owner
+
+  // Set authenticated user as new center's owner
+  req.body.owner = req.user._id;
+
   const center = await Center.create(req.body);
 
   res.status(201).json({
@@ -55,6 +60,13 @@ exports.updateCenter = async (req, res) => {
     return res.status(404).json({
       success: false,
       message: "Fitness center with specified ID doesn't exist",
+    });
+  }
+
+  if (!center.owner.equals(req.user._id)) {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized to update this fitness center",
     });
   }
 
@@ -95,6 +107,13 @@ exports.deleteCenter = async (req, res) => {
     return res.status(404).json({
       success: false,
       message: "Fitness center with specified ID doesn't exist",
+    });
+  }
+
+  if (!center.owner.equals(req.user._id)) {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized to delete this fitness center",
     });
   }
 
