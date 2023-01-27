@@ -26,6 +26,11 @@ const trainingSchema = Schema(
       ref: "User",
       required: true,
     },
+    location: {
+      type: Schema.Types.ObjectId,
+      ref: "Center",
+      required: true,
+    },
     duration: {
       type: Number,
       required: true,

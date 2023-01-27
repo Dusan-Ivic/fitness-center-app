@@ -37,6 +37,9 @@ exports.createTraining = async (req, res) => {
   // Set authenticated user as new trainings's trainer
   req.body.trainer = req.user._id;
 
+  // Set training's location to the fitness center authenticated user is employed in
+  req.body.location = req.user.center;
+
   const training = await Training.create(req.body);
 
   res.status(201).json({
