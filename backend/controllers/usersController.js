@@ -49,7 +49,9 @@ exports.createUser = async (req, res) => {
     });
   }
 
-  const user = await User.create(req.body);
+  const discriminator = User.discriminators[req.body.role];
+
+  const user = await discriminator.create(req.body);
 
   res.status(201).json({
     success: true,

@@ -27,7 +27,12 @@ exports.createCenter = async (req, res) => {
     });
   }
 
-  // TODO - Check if authenticated user's role is owner
+  if (req.user.role !== "owner") {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized to create a fitness center",
+    });
+  }
 
   // Set authenticated user as new center's owner
   req.body.owner = req.user._id;

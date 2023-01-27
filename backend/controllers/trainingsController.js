@@ -27,7 +27,12 @@ exports.createTraining = async (req, res) => {
     });
   }
 
-  // TODO - Check if authenticated user's role is trainer
+  if (req.user.role !== "trainer") {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized to create a training",
+    });
+  }
 
   // Set authenticated user as new trainings's trainer
   req.body.trainer = req.user._id;

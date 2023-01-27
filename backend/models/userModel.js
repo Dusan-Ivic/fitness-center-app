@@ -4,9 +4,10 @@ const { Schema } = mongoose;
 // Options
 userSchemaOptions = {
   collection: "users",
+  discriminatorKey: "role",
 };
 
-// Base user schema
+// Base schema
 const userSchema = Schema(
   {
     email: {
@@ -39,11 +40,42 @@ const userSchema = Schema(
       type: Date,
       required: true,
     },
+    role: {
+      type: String,
+      required: true,
+    },
   },
   userSchemaOptions
 );
 
-// Base user model
+// Visitor schema
+const visitorSchema = Schema({
+  trainings: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Training",
+    },
+  ],
+});
+
+// Trainer schema
+const trainerSchema = Schema({
+  center: {
+    type: Schema.Types.ObjectId,
+    ref: "Center",
+    required: true,
+  },
+});
+
+// Owner schema
+const ownerSchema = Schema({});
+
+// Base model
 const User = mongoose.model("User", userSchema);
+
+// Discriminator models
+User.discriminator("visitor", visitorSchema);
+User.discriminator("trainer", trainerSchema);
+User.discriminator("owner", ownerSchema);
 
 module.exports = User;
