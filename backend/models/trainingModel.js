@@ -39,6 +39,12 @@ const trainingSchema = Schema(
       type: Number,
       required: true,
     },
+    visitors: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   trainingSchemaOptions
 );
