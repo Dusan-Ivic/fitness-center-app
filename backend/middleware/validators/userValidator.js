@@ -48,6 +48,14 @@ exports.validateBody = [
     .isBefore()
     .withMessage("Birthdate must be in the past")
     .bail(),
+  body("role")
+    .trim()
+    .notEmpty()
+    .withMessage("Role is required")
+    .bail()
+    .isIn(["visitor", "trainer", "owner"])
+    .withMessage("Role is not valid")
+    .bail(),
 ];
 
 exports.validateParams = [

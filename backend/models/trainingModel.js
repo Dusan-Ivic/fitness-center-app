@@ -21,6 +21,16 @@ const trainingSchema = Schema(
       type: Date,
       required: true,
     },
+    trainer: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    location: {
+      type: Schema.Types.ObjectId,
+      ref: "Center",
+      required: true,
+    },
     duration: {
       type: Number,
       required: true,
@@ -29,6 +39,12 @@ const trainingSchema = Schema(
       type: Number,
       required: true,
     },
+    visitors: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   trainingSchemaOptions
 );
