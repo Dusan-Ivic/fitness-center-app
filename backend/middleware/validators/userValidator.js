@@ -1,7 +1,7 @@
 const { body, param } = require("express-validator");
 const { isValidObjectId } = require("mongoose");
 
-exports.validateBody = [
+exports.validateUserBody = [
   body("email")
     .trim()
     .notEmpty()
@@ -65,7 +65,7 @@ exports.validateTrainerBody = [
     .bail(),
 ];
 
-exports.validateParams = [
+exports.validateUserParams = [
   param("id")
     .trim()
     .notEmpty()

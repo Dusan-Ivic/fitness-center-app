@@ -6,12 +6,16 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 router.get("/", authMiddleware.authenticateUser, usersController.getUsers);
 
-router.post("/", userValidator.validateBody, usersController.registerVisitor);
+router.post(
+  "/",
+  userValidator.validateUserBody,
+  usersController.registerVisitor
+);
 
 router.post(
   "/employ",
   authMiddleware.authenticateUser,
-  userValidator.validateBody,
+  userValidator.validateUserBody,
   userValidator.validateTrainerBody,
   usersController.registerTrainer
 );
@@ -19,15 +23,15 @@ router.post(
 router.put(
   "/:id",
   authMiddleware.authenticateUser,
-  userValidator.validateParams,
-  userValidator.validateBody,
+  userValidator.validateUserParams,
+  userValidator.validateUserBody,
   usersController.updateUser
 );
 
 router.delete(
   "/:id",
   authMiddleware.authenticateUser,
-  userValidator.validateParams,
+  userValidator.validateUserParams,
   usersController.deleteUser
 );
 
