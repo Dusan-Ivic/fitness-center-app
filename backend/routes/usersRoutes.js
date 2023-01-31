@@ -8,6 +8,14 @@ router.get("/", authMiddleware.authenticateUser, usersController.getUsers);
 
 router.post("/", userValidator.validateBody, usersController.createUser);
 
+router.post(
+  "/employ",
+  authMiddleware.authenticateUser,
+  userValidator.validateBody,
+  userValidator.validateTrainerBody,
+  usersController.registerTrainer
+);
+
 router.put(
   "/:id",
   authMiddleware.authenticateUser,

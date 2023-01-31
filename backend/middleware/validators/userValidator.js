@@ -48,13 +48,20 @@ exports.validateBody = [
     .isBefore()
     .withMessage("Birthdate must be in the past")
     .bail(),
-  body("role")
+];
+
+exports.validateTrainerBody = [
+  body("center")
     .trim()
     .notEmpty()
-    .withMessage("Role is required")
+    .withMessage("Fitness center is required")
     .bail()
-    .isIn(["visitor", "trainer", "owner"])
-    .withMessage("Role is not valid")
+    .custom((value) => {
+      if (!isValidObjectId(value)) {
+        throw new Error("Fitness center is not valid");
+      }
+      return true;
+    })
     .bail(),
 ];
 
