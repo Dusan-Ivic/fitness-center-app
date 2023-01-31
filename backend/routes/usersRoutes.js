@@ -6,7 +6,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 router.get("/", authMiddleware.authenticateUser, usersController.getUsers);
 
-router.post("/", userValidator.validateBody, usersController.createUser);
+router.post("/", userValidator.validateBody, usersController.registerVisitor);
 
 router.post(
   "/employ",
