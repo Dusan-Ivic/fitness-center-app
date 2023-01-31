@@ -67,15 +67,11 @@ const trainerSchema = Schema({
   },
 });
 
-// Owner schema
-const ownerSchema = Schema({});
-
 // Base model
 const User = mongoose.model("User", userSchema);
 
 // Discriminator models
 User.discriminator("visitor", visitorSchema);
 User.discriminator("trainer", trainerSchema);
-User.discriminator("owner", ownerSchema);
 
 module.exports = User;
