@@ -4,7 +4,11 @@ const trainingsController = require("../controllers/trainingsController");
 const trainingValidator = require("../middleware/validators/trainingValidator");
 const authMiddleware = require("../middleware/authMiddleware");
 
-router.get("/", trainingsController.getTrainings);
+router.get(
+  "/",
+  trainingValidator.validateQuery,
+  trainingsController.getTrainings
+);
 
 router.post(
   "/",

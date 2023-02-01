@@ -5,7 +5,16 @@ const { validationResult } = require("express-validator");
 // @route   GET /api/centers
 // @access  Public
 exports.getCenters = async (req, res) => {
-  const centers = await Center.find();
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
+  const centers = await Center.find(req.query);
 
   res.status(200).json({
     success: true,

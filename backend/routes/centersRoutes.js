@@ -4,7 +4,7 @@ const centersController = require("../controllers/centersController");
 const centerValidator = require("../middleware/validators/centerValidator");
 const authMiddleware = require("../middleware/authMiddleware");
 
-router.get("/", centersController.getCenters);
+router.get("/", centerValidator.validateQuery, centersController.getCenters);
 
 router.post(
   "/",
