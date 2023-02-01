@@ -1,4 +1,4 @@
-const { body, param } = require("express-validator");
+const { body, param, query } = require("express-validator");
 const { isValidObjectId } = require("mongoose");
 
 exports.validateBody = [
@@ -66,6 +66,27 @@ exports.validateParams = [
     .custom((value) => {
       if (!isValidObjectId(value)) {
         throw new Error("Id is not valid");
+      }
+      return true;
+    })
+    .bail(),
+];
+
+exports.validateQuery = [
+  query("_id")
+    .optional()
+    .custom((value) => {
+      if (!isValidObjectId(value)) {
+        throw new Error("Center Id is not valid");
+      }
+      return true;
+    })
+    .bail(),
+  query("owner")
+    .optional()
+    .custom((value) => {
+      if (!isValidObjectId(value)) {
+        throw new Error("Owner Id is not valid");
       }
       return true;
     })

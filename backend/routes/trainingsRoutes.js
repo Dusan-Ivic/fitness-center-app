@@ -6,7 +6,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 router.get(
   "/",
-  authMiddleware.authenticateUser,
+  trainingValidator.validateQuery,
   trainingsController.getTrainings
 );
 

@@ -5,7 +5,16 @@ const { validationResult } = require("express-validator");
 // @route   GET /api/trainings
 // @access  Public
 exports.getTrainings = async (req, res) => {
-  const trainings = await Training.find();
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: errors.array().map((err) => err.msg),
+    });
+  }
+
+  const trainings = await Training.find(req.query);
 
   res.status(200).json({
     success: true,
