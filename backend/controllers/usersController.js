@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const { validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
 
 // @desc    Get all users
 // @route   GET /api/users
@@ -48,6 +49,10 @@ exports.registerVisitor = async (req, res) => {
       message: "Username is already taken",
     });
   }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+  req.body.password = hashedPassword;
 
   req.body.role = "visitor";
   const discriminator = User.discriminators[req.body.role];
@@ -101,6 +106,10 @@ exports.registerTrainer = async (req, res) => {
       message: "Username is already taken",
     });
   }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+  req.body.password = hashedPassword;
 
   req.body.role = "trainer";
   const discriminator = User.discriminators[req.body.role];
@@ -170,9 +179,12 @@ exports.updateUser = async (req, res) => {
     }
   }
 
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
   user.email = req.body.email;
   user.username = req.body.username;
-  user.password = req.body.password;
+  user.password = hashedPassword;
   user.firstName = req.body.firstName;
   user.lastName = req.body.lastName;
   user.gender = req.body.gender;

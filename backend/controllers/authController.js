@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 // @desc    Login existing user
 // @route   POST /api/auth/login
@@ -24,7 +25,9 @@ exports.loginUser = async (req, res) => {
     });
   }
 
-  if (user.password !== req.body.password) {
+  const passwordsMatch = await bcrypt.compare(req.body.password, user.password);
+
+  if (!passwordsMatch) {
     return res.status(401).json({
       success: false,
       message: "Wrong password",
