@@ -25,7 +25,7 @@ exports.getCenters = async (req, res) => {
 
 // @desc    Create new fitness center
 // @route   POST /api/centers
-// @access  Public
+// @access  Protected
 exports.createCenter = async (req, res) => {
   const errors = validationResult(req);
 
@@ -57,7 +57,7 @@ exports.createCenter = async (req, res) => {
 
 // @desc    Update existing fitness center
 // @route   PUT /api/centers/:id
-// @access  Public
+// @access  Protected
 exports.updateCenter = async (req, res) => {
   const errors = validationResult(req);
 
@@ -104,7 +104,7 @@ exports.updateCenter = async (req, res) => {
 
 // @desc    Delete existing fitness center
 // @route   DELETE /api/centers/:id
-// @access  Public
+// @access  Protected
 exports.deleteCenter = async (req, res) => {
   const errors = validationResult(req);
 

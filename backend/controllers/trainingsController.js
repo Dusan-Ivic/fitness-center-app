@@ -25,7 +25,7 @@ exports.getTrainings = async (req, res) => {
 
 // @desc    Create new training
 // @route   POST /api/trainings
-// @access  Public
+// @access  Protected
 exports.createTraining = async (req, res) => {
   const errors = validationResult(req);
 
@@ -60,7 +60,7 @@ exports.createTraining = async (req, res) => {
 
 // @desc    Update existing training
 // @route   PUT /api/trainings/:id
-// @access  Public
+// @access  Protected
 exports.updateTraining = async (req, res) => {
   const errors = validationResult(req);
 
@@ -104,7 +104,7 @@ exports.updateTraining = async (req, res) => {
 
 // @desc    Delete existing training
 // @route   DELETE /api/trainings/:id
-// @access  Public
+// @access  Protected
 exports.deleteTraining = async (req, res) => {
   const errors = validationResult(req);
 

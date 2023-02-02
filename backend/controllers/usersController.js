@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 // @desc    Get all users
 // @route   GET /api/users
-// @access  Public
+// @access  Protected
 exports.getUsers = async (req, res) => {
   const users = await User.find();
 
@@ -67,7 +67,7 @@ exports.registerVisitor = async (req, res) => {
 
 // @desc    Register new trainer
 // @route   POST /api/users/employ
-// @access  Public
+// @access  Protected
 exports.registerTrainer = async (req, res) => {
   const errors = validationResult(req);
 
@@ -124,7 +124,7 @@ exports.registerTrainer = async (req, res) => {
 
 // @desc    Update existing user
 // @route   PUT /api/users/:id
-// @access  Public
+// @access  Protected
 exports.updateUser = async (req, res) => {
   const errors = validationResult(req);
 
@@ -201,7 +201,7 @@ exports.updateUser = async (req, res) => {
 
 // @desc    Delete existing user
 // @route   DELETE /api/users/:id
-// @access  Public
+// @access  Protected
 exports.deleteUser = async (req, res) => {
   const errors = validationResult(req);
 
