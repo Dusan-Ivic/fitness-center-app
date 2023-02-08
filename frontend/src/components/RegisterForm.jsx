@@ -1,28 +1,57 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../assets/styles/Form.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { registerVisitor, reset } from "../features/users/usersSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+const registerSchema = Yup.object().shape({
+  email: Yup.string().required("Email is required").email("Email is not valid"),
+  username: Yup.string()
+    .required("Username is required")
+    .min(6, "Username should be at least 6 characters long"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(8, "Password should be at least 8 characters long"),
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  gender: Yup.string().required("Gender is required"),
+  birthdate: Yup.date()
+    .required("Birthdate is required")
+    .max(new Date(), "Birthdate must be in the past"),
+});
 
 const RegisterForm = () => {
-  const registerSchema = Yup.object().shape({
-    email: Yup.string()
-      .required("Email is required")
-      .email("Email is not valid"),
-    username: Yup.string()
-      .required("Username is required")
-      .min(6, "Username should be at least 6 characters long"),
-    password: Yup.string()
-      .required("Password is required")
-      .min(8, "Password should be at least 8 characters long"),
-    firstName: Yup.string().required("First name is required"),
-    lastName: Yup.string().required("Last name is required"),
-    gender: Yup.string().required("Gender is required"),
-    birthdate: Yup.date()
-      .required("Birthdate is required")
-      .max(new Date(), "Birthdate must be in the past"),
-  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.users
+  );
+
+  useEffect(() => {
+    if (isError) {
+      console.error(message);
+    }
+
+    if (isSuccess) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, message, navigate, dispatch]);
+
+  if (isLoading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
 
   return (
     <Formik
@@ -37,8 +66,7 @@ const RegisterForm = () => {
       }}
       validationSchema={registerSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        // TODO - Handle form data
-        console.log(values);
+        dispatch(registerVisitor(values));
         resetForm();
         setSubmitting(false);
       }}
