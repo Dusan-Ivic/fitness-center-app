@@ -92,6 +92,13 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.email}
+              className={`border border-2 ${
+                touched.email
+                  ? errors.email
+                    ? "border-danger"
+                    : "border-success"
+                  : ""
+              }`}
             />
             {errors.email && touched.email ? (
               <div className="error-message">{errors.email}</div>
@@ -107,6 +114,13 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.username}
+              className={`border border-2 ${
+                touched.username
+                  ? errors.username
+                    ? "border-danger"
+                    : "border-success"
+                  : ""
+              }`}
             />
             {errors.username && touched.username ? (
               <div className="error-message">{errors.username}</div>
@@ -122,6 +136,13 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.password}
+              className={`border border-2 ${
+                touched.password
+                  ? errors.password
+                    ? "border-danger"
+                    : "border-success"
+                  : ""
+              }`}
             />
             {errors.password && touched.password ? (
               <div className="error-message">{errors.password}</div>
@@ -137,6 +158,13 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.firstName}
+              className={`border border-2 ${
+                touched.firstName
+                  ? errors.firstName
+                    ? "border-danger"
+                    : "border-success"
+                  : ""
+              }`}
             />
             {errors.firstName && touched.firstName ? (
               <div className="error-message">{errors.firstName}</div>
@@ -152,6 +180,13 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.lastName}
+              className={`border border-2 ${
+                touched.lastName
+                  ? errors.lastName
+                    ? "border-danger"
+                    : "border-success"
+                  : ""
+              }`}
             />
             {errors.lastName && touched.lastName ? (
               <div className="error-message">{errors.lastName}</div>
@@ -167,6 +202,13 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.gender}
+              className={`border border-2 ${
+                touched.gender
+                  ? errors.gender
+                    ? "border-danger"
+                    : "border-success"
+                  : ""
+              }`}
             />
             {errors.gender && touched.gender ? (
               <div className="error-message">{errors.gender}</div>
@@ -182,6 +224,13 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.birthdate}
+              className={`border border-2 ${
+                touched.birthdate
+                  ? errors.birthdate
+                    ? "border-danger"
+                    : "border-success"
+                  : ""
+              }`}
             />
             {errors.birthdate && touched.birthdate ? (
               <div className="error-message">{errors.birthdate}</div>
