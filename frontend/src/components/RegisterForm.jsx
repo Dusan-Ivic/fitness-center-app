@@ -68,6 +68,7 @@ const RegisterForm = () => {
       }}
       validationSchema={registerSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
+        setSubmitting(true);
         dispatch(registerVisitor(values));
         resetForm();
         setSubmitting(false);
