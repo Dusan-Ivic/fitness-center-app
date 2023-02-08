@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { registerVisitor, reset } from "../features/users/usersSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { notifySuccess, notifyError } from "../utils/notify";
 
 const registerSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Email is not valid"),
@@ -35,10 +36,11 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (isError) {
-      console.error(message);
+      notifyError(message);
     }
 
     if (isSuccess) {
+      notifySuccess(message);
       navigate("/");
     }
 

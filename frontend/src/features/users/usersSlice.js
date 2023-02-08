@@ -42,9 +42,10 @@ export const usersSlice = createSlice({
       .addCase(registerVisitor.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(registerVisitor.fulfilled, (state) => {
+      .addCase(registerVisitor.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.message = action.payload.message;
       })
       .addCase(registerVisitor.rejected, (state, action) => {
         state.isLoading = false;
