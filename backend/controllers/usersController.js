@@ -60,8 +60,10 @@ exports.registerVisitor = async (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: "Visitor registered",
-    data: user,
+    message: "Visitor has successfully registered",
+    data: {
+      username: user.username,
+    },
   });
 };
 

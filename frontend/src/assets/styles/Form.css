@@ -1,0 +1,5 @@
+.error-message {
+  color: #cc0000;
+  text-transform: lowercase;
+  font-style: italic;
+}
