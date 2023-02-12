@@ -3,10 +3,21 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { logoutUser, reset } from "../features/users/usersSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { user } = useSelector((state) => state.users);
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    dispatch(reset());
+    navigate("/");
+  };
 
   return (
     <Navbar bg="dark" variant="dark" expand="md">
@@ -25,7 +36,7 @@ const Header = () => {
           <Nav>
             {user ? (
               <>
-                <Nav.Link>{user.username}</Nav.Link>
+                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </>
             ) : (
               <>

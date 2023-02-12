@@ -12,9 +12,15 @@ const loginUser = async (userData) => {
   return res.data;
 };
 
+const logoutUser = () => {
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+};
+
 const usersService = {
   registerVisitor,
   loginUser,
+  logoutUser,
 };
 
 export default usersService;
