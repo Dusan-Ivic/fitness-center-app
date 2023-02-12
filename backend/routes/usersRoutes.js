@@ -20,6 +20,12 @@ router.post(
   usersController.registerTrainer
 );
 
+router.post(
+  "/login",
+  userValidator.validateLoginBody,
+  usersController.loginUser
+);
+
 router.put(
   "/:id",
   authMiddleware.authenticateUser,
