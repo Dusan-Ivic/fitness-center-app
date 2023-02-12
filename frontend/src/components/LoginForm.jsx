@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../assets/styles/Form.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { loginUser, reset } from "../features/users/usersSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { notifySuccess, notifyError } from "../utils/notify";
 
 const loginSchema = Yup.object().shape({
   username: Yup.string()
@@ -15,6 +20,34 @@ const loginSchema = Yup.object().shape({
 });
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.users
+  );
+
+  useEffect(() => {
+    if (isError) {
+      notifyError(message);
+    }
+
+    if (isSuccess) {
+      notifySuccess(message);
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, message, navigate, dispatch]);
+
+  if (isLoading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
+
   return (
     <Formik
       initialValues={{
@@ -24,8 +57,7 @@ const LoginForm = () => {
       validationSchema={loginSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         setSubmitting(true);
-        // TODO - Handle login
-        console.log(values);
+        dispatch(loginUser(values));
         resetForm();
         setSubmitting(false);
       }}

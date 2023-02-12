@@ -6,8 +6,15 @@ const registerVisitor = async (userData) => {
   return res.data;
 };
 
+const loginUser = async (userData) => {
+  const res = await axios.post("/api/users/login", userData);
+
+  return res.data;
+};
+
 const usersService = {
   registerVisitor,
+  loginUser,
 };
 
 export default usersService;
