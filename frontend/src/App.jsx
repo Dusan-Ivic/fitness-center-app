@@ -4,7 +4,6 @@ import Container from "react-bootstrap/Container";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
-// import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -22,7 +21,6 @@ function App() {
             <Route path="/login" element={<Login />} />
           </Routes>
         </Container>
-        {/* <Footer /> */}
       </Router>
     </>
   );
