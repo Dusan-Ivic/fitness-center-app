@@ -1,7 +1,7 @@
 import React from "react";
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../../components/LoginForm";
 
-const Login = () => {
+const LoginPage = () => {
   return (
     <div className="mb-5">
       <h1>Login</h1>
@@ -10,4 +10,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

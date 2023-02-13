@@ -4,9 +4,9 @@ import Container from "react-bootstrap/Container";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
+import HomePage from "./pages/HomePage/HomePage";
+import RegisterPage from "./pages/RegisterPage/RegisterPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 function App() {
   return (
@@ -16,9 +16,9 @@ function App() {
         <ToastContainer style={{ width: "400px" }} />
         <Container className="mt-3">
           <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+            <Route exact path="/" element={<HomePage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </Container>
       </Router>

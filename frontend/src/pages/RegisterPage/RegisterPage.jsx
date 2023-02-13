@@ -1,7 +1,7 @@
 import React from "react";
-import RegisterForm from "../components/RegisterForm";
+import RegisterForm from "../../components/RegisterForm";
 
-const Register = () => {
+const RegisterPage = () => {
   return (
     <div className="mb-5">
       <h1>Register</h1>
@@ -10,4 +10,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterPage;
