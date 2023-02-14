@@ -1,6 +1,8 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 import "./ProfilePage.css";
 import { useSelector } from "react-redux";
 import moment from "moment";
@@ -11,6 +13,7 @@ const ProfilePage = () => {
   return (
     <div>
       <h1>Profile</h1>
+
       <Card className="details">
         <ListGroup variant="flush">
           <ListGroup.Item className="details-item">
@@ -45,6 +48,9 @@ const ProfilePage = () => {
           </ListGroup.Item>
         </ListGroup>
       </Card>
+      <Link as={Button} className="btn btn-warning mt-2" to="/profile/edit">
+        Edit Profile
+      </Link>
     </div>
   );
 };

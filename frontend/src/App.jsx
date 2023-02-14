@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import EditProfilePage from "./pages/EditProfilePage/EditProfilePage";
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
             <Route exact path="/" element={<HomePage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route exact path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/edit" element={<EditProfilePage />} />
           </Routes>
         </Container>
       </Router>
