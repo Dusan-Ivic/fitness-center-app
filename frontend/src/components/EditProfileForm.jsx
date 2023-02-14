@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/Form.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { updateUser, reset } from "../features/users/usersSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { notifySuccess, notifyError } from "../utils/notify";
 import moment from "moment";
 
 const updateSchema = Yup.object().shape({
@@ -21,7 +25,33 @@ const updateSchema = Yup.object().shape({
 });
 
 const EditProfileForm = () => {
-  const { user } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.users
+  );
+
+  useEffect(() => {
+    if (isError) {
+      notifyError(message);
+    }
+
+    if (isSuccess) {
+      notifySuccess(message);
+      navigate("/profile");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, message, navigate, dispatch]);
+
+  if (isLoading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
 
   return (
     <Formik
@@ -36,7 +66,7 @@ const EditProfileForm = () => {
       validationSchema={updateSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         setSubmitting(true);
-        console.log(values);
+        dispatch(updateUser(values));
         resetForm();
         setSubmitting(false);
       }}
