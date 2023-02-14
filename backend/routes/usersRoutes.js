@@ -8,14 +8,14 @@ router.get("/", authMiddleware.authenticateUser, usersController.getUsers);
 
 router.post(
   "/",
-  userValidator.validateUserBody,
+  userValidator.validateRegisterBody,
   usersController.registerVisitor
 );
 
 router.post(
   "/employ",
   authMiddleware.authenticateUser,
-  userValidator.validateUserBody,
+  userValidator.validateRegisterBody,
   userValidator.validateTrainerBody,
   usersController.registerTrainer
 );
@@ -30,7 +30,7 @@ router.put(
   "/:id",
   authMiddleware.authenticateUser,
   userValidator.validateUserParams,
-  userValidator.validateUserBody,
+  userValidator.validateUpdateBody,
   usersController.updateUser
 );
 

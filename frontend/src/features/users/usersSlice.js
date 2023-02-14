@@ -53,6 +53,26 @@ export const logoutUser = createAsyncThunk("users/logoutUser", async () => {
   await usersService.logoutUser();
 });
 
+export const updateUser = createAsyncThunk(
+  "users/updateUser",
+  async (userData, thunkAPI) => {
+    try {
+      const id = thunkAPI.getState().users.user._id;
+      const token = thunkAPI.getState().users.token;
+      return await usersService.updateUser(id, userData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const usersSlice = createSlice({
   name: "users",
   initialState,
@@ -102,6 +122,22 @@ export const usersSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.token = null;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload.message;
+        state.user = action.payload.data;
+
+        localStorage.setItem("user", JSON.stringify(state.user));
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });
