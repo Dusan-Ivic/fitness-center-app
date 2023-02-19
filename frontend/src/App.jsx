@@ -9,6 +9,7 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage/EditProfilePage";
+import OwnerDashboardPage from "./pages/DashboardPage/OwnerDashboardPage";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOwnedCenters, reset } from "./features/centers/centersSlice";
@@ -18,7 +19,7 @@ function App() {
   const { user } = useSelector((state) => state.users);
 
   useEffect(() => {
-    if (user) {
+    if (user && user.role === "owner") {
       dispatch(getOwnedCenters(user._id)).then((res) => dispatch(reset()));
     }
   }, [user, dispatch]);
@@ -35,6 +36,12 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route exact path="/profile" element={<ProfilePage />} />
             <Route path="/profile/edit" element={<EditProfilePage />} />
+            <Route
+              path="/dashboard"
+              element={
+                user && user.role === "owner" ? <OwnerDashboardPage /> : null
+              }
+            />
           </Routes>
         </Container>
       </Router>

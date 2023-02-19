@@ -36,6 +36,11 @@ const Header = () => {
           <Nav>
             {user ? (
               <>
+                {user.role === "owner" || user.role === "trainer" ? (
+                  <Nav.Link as={Link} to="/dashboard">
+                    Dashboard
+                  </Nav.Link>
+                ) : null}
                 <Nav.Link as={Link} to="/profile">
                   Profile
                 </Nav.Link>
