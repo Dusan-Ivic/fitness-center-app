@@ -1,6 +1,8 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
+import { Link } from "react-router-dom";
 import moment from "moment";
+import "../styles/Table.css";
 
 const FitnessCentersTable = ({ centers }) => {
   return (
@@ -12,6 +14,7 @@ const FitnessCentersTable = ({ centers }) => {
               <th>Name</th>
               <th>Address</th>
               <th>Opened In</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -21,6 +24,9 @@ const FitnessCentersTable = ({ centers }) => {
                   <td>{center.name}</td>
                   <td>{center.address}</td>
                   <td>{moment(center.openingYear).year()}</td>
+                  <td>
+                    <Link to={`/centers/${center._id}`}>Details</Link>
+                  </td>
                 </tr>
               ))}
           </tbody>

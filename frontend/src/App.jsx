@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage/EditProfilePage";
 import OwnerDashboardPage from "./pages/DashboardPage/OwnerDashboardPage";
+import FitnessCenterPage from "./pages/FitnessCenterPage/FitnessCenterPage";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOwnedCenters, reset } from "./features/centers/centersSlice";
@@ -42,6 +43,7 @@ function App() {
                 user && user.role === "owner" ? <OwnerDashboardPage /> : null
               }
             />
+            <Route path="/centers/:id" element={<FitnessCenterPage />} />
           </Routes>
         </Container>
       </Router>
