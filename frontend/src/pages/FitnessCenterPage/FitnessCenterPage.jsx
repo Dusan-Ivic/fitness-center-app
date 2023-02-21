@@ -1,47 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import FitnessCenterDetails from "../../components/FitnessCenterDetails";
 import FitnessCenterPrices from "../../components/FitnessCenterPrices";
-import Spinner from "react-bootstrap/Spinner";
-import axios from "axios";
 
 const FitnessCenterPage = () => {
   const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [fitnessCenter, setFitnessCenter] = useState({
-    name: "",
-    address: "",
-    openingYear: new Date(),
-    owner: "",
-    monthlyMembershipFee: 0,
-    annualMembershipFee: 0,
-    singleTrainingPrice: 0,
-    groupTrainingPrice: 0,
-    personalTrainingPrice: 0,
-  });
+  const { centers } = useSelector((state) => state.centers);
+  const [fitnessCenter, setFitnessCenter] = useState(null);
 
   useEffect(() => {
-    getFitnessCenter(id);
-  }, [id]);
-
-  const getFitnessCenter = async (id) => {
-    setIsLoading(true);
-    const res = await axios.get(`/api/centers?_id=${id}`);
-    if (res.data.count > 0) {
-      setFitnessCenter(res.data.data[0]);
-    } else {
-      setFitnessCenter(null);
+    const center = centers.find((c) => c._id === id);
+    if (center) {
+      setFitnessCenter(center);
     }
-    setIsLoading(false);
-  };
-
-  if (isLoading) {
-    return (
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-    );
-  }
+  }, [id]);
 
   return fitnessCenter ? (
     <div className="mb-5">
