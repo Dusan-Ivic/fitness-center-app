@@ -16,7 +16,7 @@ const FitnessCenterDetails = ({ center }) => {
           <div className="details-item-value">{center.address}</div>
         </ListGroup.Item>
         <ListGroup.Item className="details-item">
-          <div className="details-item-title">Opened In</div>
+          <div className="details-item-title">Opened</div>
           <div className="details-item-value">
             {moment(center.openingYear).year()}
           </div>
