@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/Form.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { createCenter, reset } from "../features/centers/centersSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { notifySuccess, notifyError } from "../utils/notify";
 
 const createFitnessCenterSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -29,6 +34,34 @@ const createFitnessCenterSchema = Yup.object().shape({
 });
 
 const CreateFitnessCenterForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.centers
+  );
+
+  useEffect(() => {
+    if (isError) {
+      notifyError(message);
+    }
+
+    if (isSuccess) {
+      notifySuccess(message);
+      navigate("/dashboard");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, message, navigate, dispatch]);
+
+  if (isLoading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
+
   return (
     <Formik
       initialValues={{
@@ -44,7 +77,7 @@ const CreateFitnessCenterForm = () => {
       validationSchema={createFitnessCenterSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         setSubmitting(true);
-        console.log(values);
+        dispatch(createCenter(values));
         resetForm();
         setSubmitting(false);
       }}
@@ -104,7 +137,7 @@ const CreateFitnessCenterForm = () => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="openingDate">
-            <Form.Label>Opened In</Form.Label>
+            <Form.Label>Opened</Form.Label>
             <Form.Control
               type="date"
               name="openingDate"

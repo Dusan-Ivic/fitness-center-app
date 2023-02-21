@@ -17,7 +17,7 @@ const centerSchema = Schema(
       type: String,
       required: true,
     },
-    openingYear: {
+    openingDate: {
       type: Date,
       required: true,
     },

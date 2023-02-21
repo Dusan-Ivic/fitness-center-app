@@ -13,7 +13,7 @@ const FitnessCentersTable = ({ centers }) => {
             <tr>
               <th>Name</th>
               <th>Address</th>
-              <th>Opened In</th>
+              <th>Opened</th>
               <th></th>
             </tr>
           </thead>
@@ -23,7 +23,7 @@ const FitnessCentersTable = ({ centers }) => {
                 <tr key={center._id}>
                   <td>{center.name}</td>
                   <td>{center.address}</td>
-                  <td>{moment(center.openingYear).year()}</td>
+                  <td>{moment(center.openingDate).format("LL")}</td>
                   <td>
                     <Link to={`/centers/${center._id}`}>Details</Link>
                   </td>

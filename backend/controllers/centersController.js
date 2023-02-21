@@ -86,7 +86,7 @@ exports.updateCenter = async (req, res) => {
 
   center.name = req.body.name;
   center.address = req.body.address;
-  center.openingYear = req.body.openingYear;
+  center.openingDate = req.body.openingDate;
   center.monthlyMembershipFee = req.body.monthlyMembershipFee;
   center.annualMembershipFee = req.body.annualMembershipFee;
   center.singleTrainingPrice = req.body.singleTrainingPrice;
