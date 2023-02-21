@@ -14,7 +14,7 @@ const FitnessCenterPage = () => {
     if (center) {
       setFitnessCenter(center);
     }
-  }, [id]);
+  }, [id, centers]);
 
   return fitnessCenter ? (
     <div className="mb-5">
