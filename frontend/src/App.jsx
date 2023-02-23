@@ -12,6 +12,7 @@ import EditProfilePage from "./pages/EditProfilePage/EditProfilePage";
 import OwnerDashboardPage from "./pages/DashboardPage/OwnerDashboardPage";
 import FitnessCenterPage from "./pages/FitnessCenterPage/FitnessCenterPage";
 import CreateFitnessCenterPage from "./pages/CreateFitnessCenterPage/CreateFitnessCenterPage";
+import EditFitnessCenterPage from "./pages/EditFitnessCenterPage/EditFitnessCenterPage";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOwnedCenters, reset } from "./features/centers/centersSlice";
@@ -47,6 +48,10 @@ function App() {
             <Route
               path="/centers/create"
               element={<CreateFitnessCenterPage />}
+            />
+            <Route
+              path="/centers/:id/edit"
+              element={<EditFitnessCenterPage />}
             />
             <Route path="/centers/:id" element={<FitnessCenterPage />} />
           </Routes>

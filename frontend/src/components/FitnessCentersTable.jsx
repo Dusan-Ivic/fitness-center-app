@@ -15,6 +15,7 @@ const FitnessCentersTable = ({ centers }) => {
               <th>Address</th>
               <th>Opened</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -26,6 +27,9 @@ const FitnessCentersTable = ({ centers }) => {
                   <td>{moment(center.openingDate).format("LL")}</td>
                   <td>
                     <Link to={`/centers/${center._id}`}>Details</Link>
+                  </td>
+                  <td>
+                    <Link to={`/centers/${center._id}/edit`}>Edit</Link>
                   </td>
                 </tr>
               ))}
