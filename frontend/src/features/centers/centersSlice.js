@@ -46,6 +46,26 @@ export const createCenter = createAsyncThunk(
   }
 );
 
+export const updateCenter = createAsyncThunk(
+  "centers/updateCenter",
+  async (centerData, thunkAPI) => {
+    try {
+      const id = centerData.id;
+      const token = thunkAPI.getState().users.token;
+      return await centersService.updateCenter(id, centerData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const centersSlice = createSlice({
   name: "centers",
   initialState,
@@ -82,6 +102,25 @@ export const centersSlice = createSlice({
         state.centers.push(action.payload.data);
       })
       .addCase(createCenter.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(updateCenter.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateCenter.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload.message;
+        state.centers = state.centers.map((center) => {
+          if (center._id === action.payload.data._id) {
+            return action.payload.data;
+          }
+          return center;
+        });
+      })
+      .addCase(updateCenter.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
