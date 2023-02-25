@@ -1,4 +1,5 @@
 const Center = require("../models/centerModel");
+const Training = require("../models/trainingModel");
 const { validationResult } = require("express-validator");
 
 // @desc    Get all fitness centers
@@ -128,6 +129,21 @@ exports.deleteCenter = async (req, res) => {
     return res.status(403).json({
       success: false,
       message: "Not authorized to delete this fitness center",
+    });
+  }
+
+  // Check if the fitness center has scheduled trainings
+  const trainings = await Training.find({
+    location: center._id,
+    startingTime: {
+      $gte: new Date(),
+    },
+  });
+
+  if (trainings.length > 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Cannot delete fitness center with scheduled trainings",
     });
   }
 
