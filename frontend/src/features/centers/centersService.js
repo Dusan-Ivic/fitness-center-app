@@ -30,10 +30,23 @@ const updateCenter = async (id, centerData, token) => {
   return res.data;
 };
 
+const deleteCenter = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.delete(`/api/centers/${id}`, config);
+
+  return res.data;
+};
+
 const centersService = {
   getOwnedCenters,
   createCenter,
   updateCenter,
+  deleteCenter,
 };
 
 export default centersService;

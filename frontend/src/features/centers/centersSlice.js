@@ -66,6 +66,25 @@ export const updateCenter = createAsyncThunk(
   }
 );
 
+export const deleteCenter = createAsyncThunk(
+  "centers/deleteCenter",
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.token;
+      return await centersService.deleteCenter(id, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const centersSlice = createSlice({
   name: "centers",
   initialState,
@@ -121,6 +140,22 @@ export const centersSlice = createSlice({
         });
       })
       .addCase(updateCenter.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(deleteCenter.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteCenter.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload.message;
+        state.centers = state.centers.filter(
+          (center) => center._id !== action.payload.data._id
+        );
+      })
+      .addCase(deleteCenter.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

@@ -1,14 +1,37 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 import FitnessCentersTable from "../../components/FitnessCentersTable";
 import "./DashboardPage.css";
+import Spinner from "react-bootstrap/Spinner";
+import { deleteCenter, reset } from "../../features/centers/centersSlice";
+import { useNavigate } from "react-router-dom";
+import { notifySuccess, notifyError } from "../../utils/notify";
 
 const OwnerDashboardPage = () => {
-  const { centers } = useSelector((state) => state.centers);
+  const { centers, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.centers
+  );
+
   const [forDelete, setForDelete] = useState({ name: "", id: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isError && message) {
+      notifyError(message);
+    }
+
+    if (isSuccess && message) {
+      notifySuccess(message);
+      navigate("/dashboard");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, message, navigate, dispatch]);
 
   const handleDeleteSet = (name, id) => {
     setIsModalVisible(true);
@@ -22,9 +45,16 @@ const OwnerDashboardPage = () => {
 
   const handleDeleteConfirm = () => {
     setIsModalVisible(false);
-    // TODO - Dispatch delete action
-    console.log(`DELETE /api/centers/${forDelete.id}`);
+    dispatch(deleteCenter(forDelete.id));
   };
+
+  if (isLoading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
 
   return (
     <div className="dashboard">
