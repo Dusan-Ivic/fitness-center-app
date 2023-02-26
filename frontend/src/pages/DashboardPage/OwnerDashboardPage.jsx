@@ -63,8 +63,8 @@ const OwnerDashboardPage = () => {
     <div className="dashboard">
       <h1>Dashboard</h1>
       <hr />
-      <div className="dashboard-centers">
-        <div className="dashboard-centers-header">
+      <div className="dashboard-group">
+        <div className="dashboard-group-header">
           <h3>Owned Fitness Centers</h3>
           <Link to={`/centers/create`}>Create new</Link>
         </div>
@@ -74,9 +74,10 @@ const OwnerDashboardPage = () => {
         />
       </div>
       <hr />
-      <div className="dashboard-trainers">
-        <div className="dashboard-trainers-header">
+      <div className="dashboard-group">
+        <div className="dashboard-group-header">
           <h3>Employed Trainers</h3>
+          <Link to={`/register/trainer`}>Register new</Link>
         </div>
         <TrainersTable trainers={trainersState.trainers} />
       </div>

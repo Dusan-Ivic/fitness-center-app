@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage/HomePage";
+import RegisterTrainerPage from "./pages/RegisterTrainerPage/RegisterTrainerPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
@@ -44,6 +45,7 @@ function App() {
         <Container className="mt-3">
           <Routes>
             <Route exact path="/" element={<HomePage />} />
+            <Route path="/register/trainer" element={<RegisterTrainerPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route exact path="/profile" element={<ProfilePage />} />
