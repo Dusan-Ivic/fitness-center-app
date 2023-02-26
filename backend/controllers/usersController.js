@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Center = require("../models/centerModel");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -7,7 +8,22 @@ const bcrypt = require("bcryptjs");
 // @route   GET /api/users
 // @access  Protected
 exports.getUsers = async (req, res) => {
-  const users = await User.find();
+  let users = [];
+
+  if (req.user.role === "owner") {
+    // Get all trainers employed in fitness centers owned by req.user
+    const centers = await Center.find({ owner: req.user._id });
+    const centersIds = centers.map((center) => center._id);
+    const Trainer = User.discriminators["trainer"];
+    users = await Trainer.find({ center: { $in: centersIds } }).populate(
+      "center"
+    );
+  } else {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized to get users data",
+    });
+  }
 
   res.status(200).json({
     success: true,

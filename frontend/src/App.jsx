@@ -15,7 +15,11 @@ import CreateFitnessCenterPage from "./pages/CreateFitnessCenterPage/CreateFitne
 import EditFitnessCenterPage from "./pages/EditFitnessCenterPage/EditFitnessCenterPage";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getOwnedCenters, reset } from "./features/centers/centersSlice";
+import { getOwnedCenters, centersSlice } from "./features/centers/centersSlice";
+import {
+  getEmployedTrainers,
+  trainersSlice,
+} from "./features/trainers/trainersSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,7 +27,12 @@ function App() {
 
   useEffect(() => {
     if (user && user.role === "owner") {
-      dispatch(getOwnedCenters(user._id)).then((res) => dispatch(reset()));
+      dispatch(getOwnedCenters(user._id)).then(() => {
+        dispatch(centersSlice.actions.reset());
+        dispatch(getEmployedTrainers()).then(() => {
+          dispatch(trainersSlice.actions.reset());
+        });
+      });
     }
   }, [user, dispatch]);
 

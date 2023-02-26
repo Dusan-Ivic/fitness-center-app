@@ -8,11 +8,14 @@ import Spinner from "react-bootstrap/Spinner";
 import { deleteCenter, reset } from "../../features/centers/centersSlice";
 import { useNavigate } from "react-router-dom";
 import { notifySuccess, notifyError } from "../../utils/notify";
+import TrainersTable from "../../components/TrainersTable";
 
 const OwnerDashboardPage = () => {
   const { centers, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.centers
   );
+
+  const trainersState = useSelector((state) => state.trainers);
 
   const [forDelete, setForDelete] = useState({ name: "", id: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -69,6 +72,13 @@ const OwnerDashboardPage = () => {
           centers={centers}
           handleDeleteSet={handleDeleteSet}
         />
+      </div>
+      <hr />
+      <div className="dashboard-trainers">
+        <div className="dashboard-trainers-header">
+          <h3>Employed Trainers</h3>
+        </div>
+        <TrainersTable trainers={trainersState.trainers} />
       </div>
       <ConfirmDeleteModal
         isModalVisible={isModalVisible}
