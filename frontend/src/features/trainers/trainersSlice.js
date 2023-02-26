@@ -47,6 +47,25 @@ export const registerTrainer = createAsyncThunk(
   }
 );
 
+export const deleteTrainer = createAsyncThunk(
+  "trainers/deleteTrainer",
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.token;
+      return await trainersService.deleteTrainer(id, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const trainersSlice = createSlice({
   name: "trainers",
   initialState,
@@ -83,6 +102,22 @@ export const trainersSlice = createSlice({
         state.trainers.push(action.payload.data);
       })
       .addCase(registerTrainer.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(deleteTrainer.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteTrainer.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload.message;
+        state.trainers = state.trainers.filter(
+          (trainer) => trainer._id !== action.payload.data._id
+        );
+      })
+      .addCase(deleteTrainer.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

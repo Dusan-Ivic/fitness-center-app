@@ -24,9 +24,22 @@ const registerTrainer = async (token, userData) => {
   return res.data;
 };
 
+const deleteTrainer = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.delete(`/api/users/${id}`, config);
+
+  return res.data;
+};
+
 const trainersService = {
   getEmployedTrainers,
   registerTrainer,
+  deleteTrainer,
 };
 
 export default trainersService;

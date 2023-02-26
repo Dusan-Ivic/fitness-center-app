@@ -3,55 +3,78 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 import FitnessCentersTable from "../../components/FitnessCentersTable";
+import TrainersTable from "../../components/TrainersTable";
 import "./DashboardPage.css";
 import Spinner from "react-bootstrap/Spinner";
-import { deleteCenter, reset } from "../../features/centers/centersSlice";
 import { useNavigate } from "react-router-dom";
 import { notifySuccess, notifyError } from "../../utils/notify";
-import TrainersTable from "../../components/TrainersTable";
+import {
+  deleteCenter,
+  centersSlice,
+} from "../../features/centers/centersSlice";
+import {
+  deleteTrainer,
+  trainersSlice,
+} from "../../features/trainers/trainersSlice";
 
 const OwnerDashboardPage = () => {
-  const { centers, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.centers
-  );
-
+  const centersState = useSelector((state) => state.centers);
   const trainersState = useSelector((state) => state.trainers);
 
-  const [forDelete, setForDelete] = useState({ name: "", id: "" });
+  const [forDelete, setForDelete] = useState({ type: "", name: "", id: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isError && message) {
-      notifyError(message);
+    if (centersState.isError && centersState.message) {
+      notifyError(centersState.message);
     }
 
-    if (isSuccess && message) {
-      notifySuccess(message);
+    if (centersState.isSuccess && centersState.message) {
+      notifySuccess(centersState.message);
       navigate("/dashboard");
     }
 
-    dispatch(reset());
-  }, [isError, isSuccess, message, navigate, dispatch]);
+    if (trainersState.isError && trainersState.message) {
+      notifyError(trainersState.message);
+    }
 
-  const handleDeleteSet = (name, id) => {
+    if (trainersState.isSuccess && trainersState.message) {
+      notifySuccess(trainersState.message);
+      navigate("/dashboard");
+    }
+
+    dispatch(centersSlice.actions.reset());
+    dispatch(trainersSlice.actions.reset());
+  }, [centersState, trainersState, navigate, dispatch]);
+
+  const handleDeleteSet = (type, name, id) => {
     setIsModalVisible(true);
-    setForDelete({ name, id });
+    setForDelete({ type, name, id });
   };
 
   const handleDeleteCancel = () => {
     setIsModalVisible(false);
-    setForDelete({ name: "", id: "" });
+    setForDelete({ type: "", name: "", id: "" });
   };
 
   const handleDeleteConfirm = () => {
     setIsModalVisible(false);
-    dispatch(deleteCenter(forDelete.id));
+    switch (forDelete.type) {
+      case "center":
+        dispatch(deleteCenter(forDelete.id));
+        break;
+      case "trainer":
+        dispatch(deleteTrainer(forDelete.id));
+        break;
+      default:
+        break;
+    }
   };
 
-  if (isLoading) {
+  if (centersState.isLoading || trainersState.isLoading) {
     return (
       <Spinner animation="border" role="status">
         <span className="visually-hidden">Loading...</span>
@@ -69,7 +92,7 @@ const OwnerDashboardPage = () => {
           <Link to={`/centers/create`}>Create new</Link>
         </div>
         <FitnessCentersTable
-          centers={centers}
+          centers={centersState.centers}
           handleDeleteSet={handleDeleteSet}
         />
       </div>
@@ -79,7 +102,10 @@ const OwnerDashboardPage = () => {
           <h3>Employed Trainers</h3>
           <Link to={`/register/trainer`}>Register new</Link>
         </div>
-        <TrainersTable trainers={trainersState.trainers} />
+        <TrainersTable
+          trainers={trainersState.trainers}
+          handleDeleteSet={handleDeleteSet}
+        />
       </div>
       <ConfirmDeleteModal
         isModalVisible={isModalVisible}

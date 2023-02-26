@@ -270,13 +270,6 @@ exports.deleteUser = async (req, res) => {
     });
   }
 
-  if (req.user.id !== req.params.id) {
-    return res.status(403).json({
-      success: false,
-      message: "Not authorized (delete)",
-    });
-  }
-
   const user = await User.findById(req.params.id);
 
   if (!user) {
@@ -286,11 +279,34 @@ exports.deleteUser = async (req, res) => {
     });
   }
 
+  // Only owners can delete employed trainers
+  if (req.user.role !== "owner" || user.role !== "trainer") {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized to delete a trainer",
+    });
+  }
+
+  // Find all fitness centers owned by authenticated owner
+  const centers = await Center.find({ owner: req.user._id });
+  const centersIds = centers.map((center) => center._id);
+
+  const isEmployee = centersIds.some((cid) => {
+    return cid.equals(user.center);
+  });
+
+  if (!isEmployee) {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized to delete a trainer",
+    });
+  }
+
   await user.remove();
 
   res.status(200).json({
     success: true,
-    message: "User deleted",
+    message: "Trainer deleted",
     data: {
       _id: req.params.id,
     },

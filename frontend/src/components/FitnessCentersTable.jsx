@@ -35,7 +35,9 @@ const FitnessCentersTable = ({ centers, handleDeleteSet }) => {
                   <td>
                     <Link
                       to=""
-                      onClick={() => handleDeleteSet(center.name, center._id)}
+                      onClick={() =>
+                        handleDeleteSet("center", center.name, center._id)
+                      }
                     >
                       Delete
                     </Link>
