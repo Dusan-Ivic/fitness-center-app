@@ -10,11 +10,30 @@ const initialState = {
 };
 
 export const getEmployedTrainers = createAsyncThunk(
-  "centers/getEmployedTrainers",
+  "trainers/getEmployedTrainers",
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().users.token;
       return await trainersService.getEmployedTrainers(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const registerTrainer = createAsyncThunk(
+  "trainers/registerTrainer",
+  async (userData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.token;
+      return await trainersService.registerTrainer(token, userData);
     } catch (error) {
       const message =
         (error.response &&
@@ -50,6 +69,20 @@ export const trainersSlice = createSlice({
         state.trainers = action.payload.data;
       })
       .addCase(getEmployedTrainers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(registerTrainer.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerTrainer.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload.message;
+        state.trainers.push(action.payload.data);
+      })
+      .addCase(registerTrainer.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

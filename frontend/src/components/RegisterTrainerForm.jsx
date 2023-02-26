@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
+import "../styles/Form.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { registerTrainer, reset } from "../features/trainers/trainersSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { notifySuccess, notifyError } from "../utils/notify";
 
 const registerTrainerSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Email is not valid"),
@@ -23,7 +28,34 @@ const registerTrainerSchema = Yup.object().shape({
 });
 
 const RegisterTrainerForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { centers } = useSelector((state) => state.centers);
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.trainers
+  );
+
+  useEffect(() => {
+    if (isError && message) {
+      notifyError(message);
+    }
+
+    if (isSuccess && message) {
+      notifySuccess(message);
+      navigate("/dashboard");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, message, navigate, dispatch]);
+
+  if (isLoading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
 
   return (
     <>
@@ -42,7 +74,7 @@ const RegisterTrainerForm = () => {
           validationSchema={registerTrainerSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
-            console.log(values);
+            dispatch(registerTrainer(values));
             resetForm();
             setSubmitting(false);
           }}
