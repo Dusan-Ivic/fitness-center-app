@@ -4,16 +4,16 @@ const { isValidObjectId } = require("mongoose");
 exports.validateBody = [
   body("name").trim().notEmpty().withMessage("Name is required").bail(),
   body("address").trim().notEmpty().withMessage("Address is required").bail(),
-  body("openingYear")
+  body("openingDate")
     .trim()
     .notEmpty()
-    .withMessage("Opening year is required")
+    .withMessage("Opening date is required")
     .bail()
     .isISO8601()
-    .withMessage("Opening year is not valid")
+    .withMessage("Opening date is not valid")
     .bail()
     .isBefore()
-    .withMessage("Opening year must be in the past")
+    .withMessage("Opening date must be in the past")
     .bail(),
   body("monthlyMembershipFee")
     .trim()
