@@ -21,19 +21,29 @@ import {
   getEmployedTrainers,
   trainersSlice,
 } from "./features/trainers/trainersSlice";
+import {
+  getCreatedTrainings,
+  trainingsSlice,
+} from "./features/trainings/trainingsSlice";
 
 function App() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
 
   useEffect(() => {
-    if (user && user.role === "owner") {
-      dispatch(getOwnedCenters(user._id)).then(() => {
-        dispatch(centersSlice.actions.reset());
-        dispatch(getEmployedTrainers()).then(() => {
-          dispatch(trainersSlice.actions.reset());
+    if (user) {
+      if (user.role === "owner") {
+        dispatch(getOwnedCenters(user._id)).then(() => {
+          dispatch(centersSlice.actions.reset());
+          dispatch(getEmployedTrainers()).then(() => {
+            dispatch(trainersSlice.actions.reset());
+          });
         });
-      });
+      } else if (user.role === "trainer") {
+        dispatch(getCreatedTrainings(user._id)).then(() => {
+          dispatch(trainingsSlice.actions.reset());
+        });
+      }
     }
   }, [user, dispatch]);
 
