@@ -25,6 +25,7 @@ import {
   getCreatedTrainings,
   trainingsSlice,
 } from "./features/trainings/trainingsSlice";
+import TrainerDashboardPage from "./pages/DashboardPage/TrainerDashboardPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -63,7 +64,13 @@ function App() {
             <Route
               path="/dashboard"
               element={
-                user && user.role === "owner" ? <OwnerDashboardPage /> : null
+                user ? (
+                  user.role === "owner" ? (
+                    <OwnerDashboardPage />
+                  ) : user.role === "trainer" ? (
+                    <TrainerDashboardPage />
+                  ) : null
+                ) : null
               }
             />
             <Route

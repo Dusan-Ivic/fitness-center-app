@@ -1,0 +1,40 @@
+import React from "react";
+import Table from "react-bootstrap/Table";
+import moment from "moment";
+import "../styles/Table.css";
+
+const TrainingsTable = ({ trainings }) => {
+  return (
+    <>
+      {trainings && trainings.length > 0 ? (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Starting</th>
+              <th>Capacity</th>
+              <th>Visitors</th>
+            </tr>
+          </thead>
+          <tbody>
+            {trainings &&
+              trainings.map((training) => (
+                <tr key={training._id}>
+                  <td>{training.name}</td>
+                  <td>{training.type}</td>
+                  <td>{moment(training.startingTime).format("LL")}</td>
+                  <td>{training.maxVisitors}</td>
+                  <td>{training.visitors.length}</td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
+      ) : (
+        <p>No Trainings Found</p>
+      )}
+    </>
+  );
+};
+
+export default TrainingsTable;
