@@ -14,7 +14,9 @@ exports.getTrainings = async (req, res) => {
     });
   }
 
-  const trainings = await Training.find(req.query);
+  const trainings = await Training.find(req.query)
+    .populate("location")
+    .populate("trainer");
 
   res.status(200).json({
     success: true,

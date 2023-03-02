@@ -1,5 +1,6 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import "../styles/Table.css";
 
@@ -13,8 +14,7 @@ const TrainingsTable = ({ trainings }) => {
               <th>Name</th>
               <th>Type</th>
               <th>Starting</th>
-              <th>Capacity</th>
-              <th>Visitors</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -23,9 +23,10 @@ const TrainingsTable = ({ trainings }) => {
                 <tr key={training._id}>
                   <td>{training.name}</td>
                   <td>{training.type}</td>
-                  <td>{moment(training.startingTime).format("LL")}</td>
-                  <td>{training.maxVisitors}</td>
-                  <td>{training.visitors.length}</td>
+                  <td>{moment(training.startingTime).format("LLL")}</td>
+                  <td>
+                    <Link to={`/trainings/${training._id}`}>Details</Link>
+                  </td>
                 </tr>
               ))}
           </tbody>
