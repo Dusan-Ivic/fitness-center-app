@@ -6,8 +6,21 @@ const getCreatedTrainings = async (id) => {
   return res.data;
 };
 
+const createTraining = async (trainingData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.post("/api/trainings", trainingData, config);
+
+  return res.data;
+};
+
 const trainingsService = {
   getCreatedTrainings,
+  createTraining,
 };
 
 export default trainingsService;

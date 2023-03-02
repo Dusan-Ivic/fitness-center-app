@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/Form.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { createTraining, reset } from "../features/trainings/trainingsSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { notifySuccess, notifyError } from "../utils/notify";
 
 const createTrainingSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -20,6 +25,34 @@ const createTrainingSchema = Yup.object().shape({
 });
 
 const CreateTrainingForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.trainings
+  );
+
+  useEffect(() => {
+    if (isError && message) {
+      notifyError(message);
+    }
+
+    if (isSuccess && message) {
+      notifySuccess(message);
+      navigate("/dashboard");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, message, navigate, dispatch]);
+
+  if (isLoading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
+
   return (
     <Formik
       initialValues={{
@@ -32,7 +65,7 @@ const CreateTrainingForm = () => {
       validationSchema={createTrainingSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         setSubmitting(true);
-        console.log(values);
+        dispatch(createTraining(values));
         resetForm();
         setSubmitting(false);
       }}
