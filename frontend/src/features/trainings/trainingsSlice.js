@@ -46,6 +46,26 @@ export const createTraining = createAsyncThunk(
   }
 );
 
+export const updateTraining = createAsyncThunk(
+  "trainings/updateTraining",
+  async (trainingData, thunkAPI) => {
+    try {
+      const id = trainingData.id;
+      const token = thunkAPI.getState().users.token;
+      return await trainingsService.updateTraining(id, trainingData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const trainingsSlice = createSlice({
   name: "trainings",
   initialState,
@@ -82,6 +102,25 @@ export const trainingsSlice = createSlice({
         state.trainings.push(action.payload.data);
       })
       .addCase(createTraining.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(updateTraining.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateTraining.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload.message;
+        state.trainings = state.trainings.map((training) => {
+          if (training._id === action.payload.data._id) {
+            return action.payload.data;
+          }
+          return training;
+        });
+      })
+      .addCase(updateTraining.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

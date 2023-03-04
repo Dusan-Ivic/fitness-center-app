@@ -18,9 +18,22 @@ const createTraining = async (trainingData, token) => {
   return res.data;
 };
 
+const updateTraining = async (id, trainingData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.put(`/api/trainings/${id}`, trainingData, config);
+
+  return res.data;
+};
+
 const trainingsService = {
   getCreatedTrainings,
   createTraining,
+  updateTraining,
 };
 
 export default trainingsService;
