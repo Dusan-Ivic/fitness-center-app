@@ -30,10 +30,23 @@ const updateTraining = async (id, trainingData, token) => {
   return res.data;
 };
 
+const deleteTraining = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.delete(`/api/trainings/${id}`, config);
+
+  return res.data;
+};
+
 const trainingsService = {
   getCreatedTrainings,
   createTraining,
   updateTraining,
+  deleteTraining,
 };
 
 export default trainingsService;

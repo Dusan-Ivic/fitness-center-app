@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import "../styles/Table.css";
 
-const TrainingsTable = ({ trainings }) => {
+const TrainingsTable = ({ trainings, handleDeleteSet }) => {
   return (
     <>
       {trainings && trainings.length > 0 ? (
@@ -14,6 +14,7 @@ const TrainingsTable = ({ trainings }) => {
               <th>Name</th>
               <th>Type</th>
               <th>Starting</th>
+              <th></th>
               <th></th>
               <th></th>
             </tr>
@@ -30,6 +31,16 @@ const TrainingsTable = ({ trainings }) => {
                   </td>
                   <td>
                     <Link to={`/trainings/${training._id}/edit`}>Edit</Link>
+                  </td>
+                  <td>
+                    <Link
+                      to=""
+                      onClick={() =>
+                        handleDeleteSet("training", training.name, training._id)
+                      }
+                    >
+                      Delete
+                    </Link>
                   </td>
                 </tr>
               ))}
