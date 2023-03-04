@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import TrainingDetails from "../../components/TrainingDetails";
+import TrainingVisitors from "../../components/TrainingVisitors";
 
 const TrainingPage = () => {
   const { id } = useParams();
+  const { user } = useSelector((state) => state.users);
   const { trainings } = useSelector((state) => state.trainings);
   const [trainingData, setTrainingData] = useState(null);
 
@@ -23,6 +25,15 @@ const TrainingPage = () => {
         <h3>Details</h3>
         <TrainingDetails training={trainingData} />
       </div>
+      {user && user.role === "trainer" ? (
+        <>
+          <hr />
+          <div>
+            <h3>Visitors</h3>
+            <TrainingVisitors visitors={trainingData.visitors} />
+          </div>
+        </>
+      ) : null}
     </div>
   ) : null;
 };
