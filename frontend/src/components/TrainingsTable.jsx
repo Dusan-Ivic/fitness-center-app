@@ -15,6 +15,7 @@ const TrainingsTable = ({ trainings }) => {
               <th>Type</th>
               <th>Starting</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -26,6 +27,9 @@ const TrainingsTable = ({ trainings }) => {
                   <td>{moment(training.startingTime).format("LLL")}</td>
                   <td>
                     <Link to={`/trainings/${training._id}`}>Details</Link>
+                  </td>
+                  <td>
+                    <Link to={`/trainings/${training._id}/edit`}>Edit</Link>
                   </td>
                 </tr>
               ))}
