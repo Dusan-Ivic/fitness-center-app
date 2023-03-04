@@ -14,6 +14,9 @@ import OwnerDashboardPage from "./pages/DashboardPage/OwnerDashboardPage";
 import FitnessCenterPage from "./pages/FitnessCenterPage/FitnessCenterPage";
 import CreateFitnessCenterPage from "./pages/CreateFitnessCenterPage/CreateFitnessCenterPage";
 import EditFitnessCenterPage from "./pages/EditFitnessCenterPage/EditFitnessCenterPage";
+import TrainingPage from "./pages/TrainingPage/TrainingPage";
+import CreateTrainingPage from "./pages/CreateTrainingPage/CreateTrainingPage";
+import EditTrainingPage from "./pages/EditTrainingPage/EditTrainingPage";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOwnedCenters, centersSlice } from "./features/centers/centersSlice";
@@ -21,19 +24,30 @@ import {
   getEmployedTrainers,
   trainersSlice,
 } from "./features/trainers/trainersSlice";
+import {
+  getCreatedTrainings,
+  trainingsSlice,
+} from "./features/trainings/trainingsSlice";
+import TrainerDashboardPage from "./pages/DashboardPage/TrainerDashboardPage";
 
 function App() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
 
   useEffect(() => {
-    if (user && user.role === "owner") {
-      dispatch(getOwnedCenters(user._id)).then(() => {
-        dispatch(centersSlice.actions.reset());
-        dispatch(getEmployedTrainers()).then(() => {
-          dispatch(trainersSlice.actions.reset());
+    if (user) {
+      if (user.role === "owner") {
+        dispatch(getOwnedCenters(user._id)).then(() => {
+          dispatch(centersSlice.actions.reset());
+          dispatch(getEmployedTrainers()).then(() => {
+            dispatch(trainersSlice.actions.reset());
+          });
         });
-      });
+      } else if (user.role === "trainer") {
+        dispatch(getCreatedTrainings(user._id)).then(() => {
+          dispatch(trainingsSlice.actions.reset());
+        });
+      }
     }
   }, [user, dispatch]);
 
@@ -53,7 +67,13 @@ function App() {
             <Route
               path="/dashboard"
               element={
-                user && user.role === "owner" ? <OwnerDashboardPage /> : null
+                user ? (
+                  user.role === "owner" ? (
+                    <OwnerDashboardPage />
+                  ) : user.role === "trainer" ? (
+                    <TrainerDashboardPage />
+                  ) : null
+                ) : null
               }
             />
             <Route
@@ -65,6 +85,9 @@ function App() {
               element={<EditFitnessCenterPage />}
             />
             <Route path="/centers/:id" element={<FitnessCenterPage />} />
+            <Route path="/trainings/create" element={<CreateTrainingPage />} />
+            <Route path="/trainings/:id/edit" element={<EditTrainingPage />} />
+            <Route path="/trainings/:id" element={<TrainingPage />} />
           </Routes>
         </Container>
       </Router>
